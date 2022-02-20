@@ -31,8 +31,27 @@ def get_today_courses(user: StudentVue) -> dict:
         course_name = today_course["@ClassName"]
         start_time = today_course["@StartTime"]
         end_time = today_course["@EndTime"]
+        meeting_days = today_course['@MeetingDays']
+        room_name = today_course['room_name']
+        teacher = today_course['teacher']
         for all_course in all_courses:
             if all_course["@CourseTitle"] in course_name:
-                today_course_names[all_course["@CourseTitle"]] = {"start_time": start_time, "end_time": end_time}
+                today_course_names[all_course["@CourseTitle"]] = {"start_time": start_time, "end_time": end_time,
+                                                                  "meeting_days": meeting_days, "room_name": room_name,
+                                                                  "teacher": teacher}
     return today_course_names
 
+
+def get_courses(user: StudentVue) -> dict:
+    courses = get_full_courses(user)
+    filtered_courses = []
+    for course in courses:
+        course = {
+            'period': course['@Period'],
+            'course_title': course['@CourseTitle'],
+            "room_name": course['@RoomName'],
+            "teacher": course['@Teacher'],
+            "meeting_days": course['@MeetingDays'],
+        }
+        filtered_courses.append(course)
+    return filtered_courses
