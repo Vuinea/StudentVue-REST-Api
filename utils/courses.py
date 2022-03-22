@@ -42,7 +42,7 @@ def get_today_courses(user: StudentVue) -> dict:
     return today_course_names
 
 
-def get_courses(user: StudentVue) -> dict:
+def get_courses(user: StudentVue) -> list:
     courses = get_full_courses(user)
     filtered_courses = []
     for course in courses:

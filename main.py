@@ -6,11 +6,13 @@ from utils.grades import get_grades
 from utils.assignments import get_assignments, get_weighted_assignments
 from utils.events import get_events, get_all_events, get_today_events
 
+
 from local_settings import USERNAME, PASSWORD
 
 app = FastAPI()
 
 user = StudentVue(USERNAME, PASSWORD, "portal.lcps.org")
+
 
 
 @app.get("/courses")
@@ -22,6 +24,11 @@ async def courses(today: bool = True):
         except KeyError:
             pass
     return get_courses(user)
+
+
+@app.get("/courses/{course_id}")
+async def course(course_id: int):
+    return get_courses(user)[course_id]
 
 
 @app.get("/grades")
@@ -57,4 +64,3 @@ async def filtered_events(filter: str):
         return get_all_events(user)
     elif filter == "today":
         return get_today_events(user)
-
